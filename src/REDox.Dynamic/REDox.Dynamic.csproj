@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Dynamic</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>dynamic access to the token DOM</Description>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);dynamic;json</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

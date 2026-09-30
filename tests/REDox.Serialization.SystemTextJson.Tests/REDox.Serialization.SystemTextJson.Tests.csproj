@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\REDox.Serialization.SystemTextJson\REDox.Serialization.SystemTextJson.csproj"/>
+        <ProjectReference Include="..\..\src\REDox\REDox.csproj"/>
+        <ProjectReference Include="..\REDox.Tests\REDox.Tests.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+</Project>

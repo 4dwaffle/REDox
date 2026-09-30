@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Xml</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>XML structural parser/writer</Description>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);xml;parser</PackageTags>
+        <Version>$(VersionPrefix)-preview</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

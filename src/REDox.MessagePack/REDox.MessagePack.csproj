@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.MessagePack</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>MessagePack parser/writer integration</Description>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);messagepack;msgpack;binary;serializer;serialization</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj"/>
+    </ItemGroup>
+</Project>

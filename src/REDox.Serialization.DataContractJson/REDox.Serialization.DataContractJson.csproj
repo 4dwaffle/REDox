@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Serialization.DataContractJson</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>DataContractJsonSerializer compatibility layer</Description>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);json;datacontract;datacontractjsonserializer;serializer;serialization;compatibility</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

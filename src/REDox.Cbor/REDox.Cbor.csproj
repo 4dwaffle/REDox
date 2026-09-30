@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Cbor</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);cbor;binary;serializer;serialization</PackageTags>
+        <Description>CBOR parser/writer integration</Description>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

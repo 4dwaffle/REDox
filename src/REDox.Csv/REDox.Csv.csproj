@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Csv</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>CSV support</Description>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);csv;parser</PackageTags>
+        <Version>$(VersionPrefix)-preview</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

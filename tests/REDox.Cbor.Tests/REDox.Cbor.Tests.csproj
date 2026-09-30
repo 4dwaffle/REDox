@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="PeterO.Cbor" Version="5.0.0-alpha2" />
+        <PackageReference Include="System.Formats.Cbor" Version="11.0.0-preview.5.26302.115" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\REDox.Cbor\REDox.Cbor.csproj" />
+        <ProjectReference Include="..\..\src\REDox\REDox.csproj" />
+        <ProjectReference Include="..\REDox.Tests\REDox.Tests.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+</Project>

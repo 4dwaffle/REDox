@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Serialization.SystemTextJson</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>System.Text.Json compatibility layer</Description>
+        <Version>$(VersionPrefix)-preview</Version>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);json;system.text.json;serializer;serialization;compatibility</PackageTags>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

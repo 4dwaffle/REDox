@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>REDox.Serialization.NewtonsoftJson</RootNamespace>
+        <Title>$(AssemblyName)</Title>
+        <Description>Newtonsoft.Json compatibility layer</Description>
+        <PackageId>CAPCOM.$(AssemblyName)</PackageId>
+        <PackageTags>$(PackageTags);json;newtonsoft.json;json.net;serializer;serialization;compatibility</PackageTags>
+        <Version>$(VersionPrefix)-preview</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\REDox\REDox.csproj" />
+    </ItemGroup>
+</Project>

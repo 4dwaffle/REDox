@@ -1,0 +1,71 @@
+﻿using System.Text;
+using REDox.Json;
+
+namespace REDox.Tests;
+
+public class DocumentDuplicate
+{
+    [Fact]
+    public void JsonDuplicate()
+    {
+        var json = """
+                   {"A":123,"B":"ABC","C":true,"D":[1,2,3],"E":{"F":1.23}}
+                   """;
+
+        var utf8Json = Encoding.UTF8.GetBytes(json);
+
+        using var doc = JsonDocument.Parse(json);
+
+        Assert.Equal("""{"A":123,"B":"ABC","C":true,"D":[1,2,3],"E":{"F":1.23}}""", doc.RootElement.ToString());
+
+        if (doc.RootElement.TryGetProperty("A", out var a))
+        {
+            a.AsValue().ReplaceWith(999);
+        }
+
+        Assert.Equal("""{"A":999,"B":"ABC","C":true,"D":[1,2,3],"E":{"F":1.23}}""", doc.RootElement.ToString());
+
+        if (doc.RootElement.TryGetProperty("D", out var d))
+        {
+            var arr = d.AsArray();
+            arr.Add(4);
+            arr.Add(5);
+        }
+
+        Assert.Equal("""{"A":999,"B":"ABC","C":true,"D":[1,2,3,4,5],"E":{"F":1.23}}""", doc.RootElement.ToString());
+
+        if (doc.RootElement.TryGetProperty("E", out var e))
+        {
+            var obj = e.AsObject();
+            obj.Add("G", true);
+        }
+
+        Assert.Equal("""{"A":999,"B":"ABC","C":true,"D":[1,2,3,4,5],"E":{"F":1.23,"G":true}}""",
+            doc.RootElement.ToString());
+
+        var doc2 = doc.Duplicate();
+
+        Assert.Equal("""{"A":999,"B":"ABC","C":true,"D":[1,2,3,4,5],"E":{"F":1.23,"G":true}}""",
+            doc2.RootElement.ToString());
+
+        if (doc2.RootElement.TryGetProperty("D", out var d2))
+        {
+            d2.AsArray().RemoveAt(2);
+        }
+
+        Assert.Equal("""{"A":999,"B":"ABC","C":true,"D":[1,2,3,4,5],"E":{"F":1.23,"G":true}}""",
+            doc.RootElement.ToString());
+        Assert.Equal("""{"A":999,"B":"ABC","C":true,"D":[1,2,4,5],"E":{"F":1.23,"G":true}}""",
+            doc2.RootElement.ToString());
+
+        doc.Dispose();
+
+        Assert.False(doc.RootElement.IsValid);
+        Assert.False(doc.IsValid);
+
+        var doc3 = doc2.Duplicate();
+        var doc4 = doc2.Duplicate();
+
+        TestContext.Current.TestOutputHelper?.WriteLine(doc2.RootElement.ToString()!);
+    }
+}

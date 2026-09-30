@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+        <PackageReference Include="MessagePack" Version="3.1.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\REDox.MessagePack\REDox.MessagePack.csproj" />
+        <ProjectReference Include="..\..\src\REDox\REDox.csproj" />
+        <ProjectReference Include="..\REDox.Benchmarks\REDox.Benchmarks.csproj" />
+    </ItemGroup>
+
+</Project>
