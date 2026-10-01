@@ -86,24 +86,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (sbyte)_converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<sbyte, T>(ref value);
+            return Unsafe.BitCast<sbyte, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, sbyte>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, sbyte>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (sbyte)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<sbyte, T>(ref value);
+            return Unsafe.BitCast<sbyte, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, sbyte>(ref value));
+            _converter.Write(writer, Unsafe.BitCast<T, sbyte>(value));
         }
     }
 
@@ -121,24 +121,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (short)_converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<short, T>(ref value);
+            return Unsafe.BitCast<short, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, short>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, short>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (short)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<short, T>(ref value);
+            return Unsafe.BitCast<short, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, short>(ref value));
+            _converter.Write(writer, Unsafe.BitCast<T, short>(value));
         }
     }
 
@@ -156,24 +156,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (int)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<int, T>(ref value);
+            return Unsafe.BitCast<int, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, int>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, int>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (int)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<int, T>(ref value);
+            return Unsafe.BitCast<int, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, int>(ref value));
+            _converter.Write(writer, Unsafe.BitCast<T, int>(value));
         }
     }
 
@@ -191,24 +191,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = _converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<long, T>(ref value);
+            return Unsafe.BitCast<long, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, long>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, long>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = reader.ReadInt64(tokenId);
 
-            return Unsafe.As<long, T>(ref value);
+            return Unsafe.BitCast<long, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            writer.WriteInt64(Unsafe.As<T, long>(ref value));
+            writer.WriteInt64(Unsafe.BitCast<T, long>(value));
         }
     }
 
@@ -226,24 +226,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (byte)_converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<byte, T>(ref value);
+            return Unsafe.BitCast<byte, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, byte>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, byte>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (byte)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<byte, T>(ref value);
+            return Unsafe.BitCast<byte, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, byte>(ref value));
+            _converter.Write(writer, Unsafe.BitCast<T, byte>(value));
         }
     }
 
@@ -261,24 +261,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (ushort)_converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<ushort, T>(ref value);
+            return Unsafe.BitCast<ushort, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, ushort>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, ushort>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (ushort)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<ushort, T>(ref value);
+            return Unsafe.BitCast<ushort, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, ushort>(ref value));
+            _converter.Write(writer, Unsafe.BitCast<T, ushort>(value));
         }
     }
 
@@ -296,24 +296,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (uint)_converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<uint, T>(ref value);
+            return Unsafe.BitCast<uint, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, uint>(ref value), true);
+            _converter.Write(writer, Unsafe.BitCast<T, uint>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (uint)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<uint, T>(ref value);
+            return Unsafe.BitCast<uint, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, Unsafe.As<T, uint>(ref value));
+            _converter.Write(writer, Unsafe.BitCast<T, uint>(value));
         }
     }
 
@@ -331,24 +331,24 @@ public sealed class StringEnumConverter : DataConverterFactory
         {
             var value = (ulong)_converter.Read(reader, tokenId, true);
 
-            return Unsafe.As<ulong, T>(ref value);
+            return Unsafe.BitCast<ulong, T>(value);
         }
 
         public override void WriteAsPropertyName(DataWriter writer, T value)
         {
-            _converter.Write(writer, (long)Unsafe.As<T, ulong>(ref value), true);
+            _converter.Write(writer, (long)Unsafe.BitCast<T, ulong>(value), true);
         }
 
         public override T Read(in DataReader reader, uint tokenId, T existingValue)
         {
             var value = (ulong)_converter.Read(reader, tokenId);
 
-            return Unsafe.As<ulong, T>(ref value);
+            return Unsafe.BitCast<ulong, T>(value);
         }
 
         public override void Write(DataWriter writer, T value)
         {
-            _converter.Write(writer, (long)Unsafe.As<T, ulong>(ref value));
+            _converter.Write(writer, (long)Unsafe.BitCast<T, ulong>(value));
         }
     }
 

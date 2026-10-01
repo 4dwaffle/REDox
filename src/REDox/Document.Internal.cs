@@ -689,7 +689,7 @@ public abstract partial class Document
                 case DTokenKind.Float:
                     {
                         var payload = value.Payload;
-                        var floatValue = Unsafe.As<long, double>(ref payload);
+                        var floatValue = Unsafe.BitCast<long, double>(payload);
 
                         return ExtendFloatToken(tokenId, (FloatKind)((int)variant & 7), floatValue);
                     }
@@ -703,7 +703,7 @@ public abstract partial class Document
                 case DTokenKind.Timestamp:
                     {
                         var payload = value.Payload;
-                        var dateTimeValue = Unsafe.As<long, DateTime>(ref payload);
+                        var dateTimeValue = Unsafe.BitCast<long, DateTime>(payload);
 
                         return ExtendToken(tokenId, variant, dateTimeValue);
                     }

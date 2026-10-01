@@ -182,7 +182,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
         return new DValue
         {
             Instance = s_tokenVariants[(int)DTokenVariant.FloatHalf],
-            Payload = Unsafe.As<double, long>(ref d)
+            Payload = Unsafe.BitCast<double, long>(d)
         };
     }
 
@@ -193,7 +193,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
         return new DValue
         {
             Instance = s_tokenVariants[(int)DTokenVariant.FloatSingle],
-            Payload = Unsafe.As<double, long>(ref d)
+            Payload = Unsafe.BitCast<double, long>(d)
         };
     }
 
@@ -202,7 +202,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
         return new DValue
         {
             Instance = s_tokenVariants[(int)DTokenVariant.Float],
-            Payload = Unsafe.As<double, long>(ref value)
+            Payload = Unsafe.BitCast<double, long>(value)
         };
     }
 
@@ -225,7 +225,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
         return new DValue
         {
             Instance = s_tokenVariants[(int)kind.ToVariant()],
-            Payload = Unsafe.As<DateTime, long>(ref value)
+            Payload = Unsafe.BitCast<DateTime, long>(value)
         };
     }
 
@@ -1433,7 +1433,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
             {
                 var payload = value.Payload;
 
-                return (float)Unsafe.As<long, double>(ref payload);
+                return (float)Unsafe.BitCast<long, double>(payload);
             }
 
             return value.To<float>();
@@ -1475,7 +1475,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
             {
                 var payload = value.Payload;
 
-                return Unsafe.As<long, double>(ref payload);
+                return Unsafe.BitCast<long, double>(payload);
             }
 
             return value.To<double>();
@@ -1557,7 +1557,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
             {
                 var payload = value.Payload;
 
-                return Unsafe.As<long, DateTime>(ref payload);
+                return Unsafe.BitCast<long, DateTime>(payload);
             }
 
             return value.To<DateTime>();
@@ -1714,13 +1714,13 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
             if (kind == DTokenKind.Timestamp)
             {
                 var payload = Payload;
-                return Unsafe.As<long, DateTime>(ref payload).ToString("o");
+                return Unsafe.BitCast<long, DateTime>(payload).ToString("o");
             }
 
             if (kind == DTokenKind.Float)
             {
                 var payload = Payload;
-                return Unsafe.As<long, double>(ref payload).ToString("R");
+                return Unsafe.BitCast<long, double>(payload).ToString("R");
             }
 
             if (kind == DTokenKind.String || kind == DTokenKind.Symbol)

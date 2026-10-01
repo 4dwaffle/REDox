@@ -273,7 +273,7 @@ public sealed class MessagePackDocument : Document
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static DToken MakeSingleLiteral(float value)
     {
-        return DToken.Make(DTokenVariant.FloatSingle, 0x0080000000000000L | Unsafe.As<float, uint>(ref value));
+        return DToken.Make(DTokenVariant.FloatSingle, 0x0080000000000000L | Unsafe.BitCast<float, uint>(value));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1109,7 +1109,7 @@ public sealed class MessagePackDocument : Document
 
         if (token.Variant == DTokenVariant.FloatSingle)
         {
-            return Unsafe.As<int, float>(ref param);
+            return Unsafe.BitCast<int, float>(param);
         }
 
         return BinaryPrimitives.ReadDoubleBigEndian(_source.Span.Slice(param));

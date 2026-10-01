@@ -315,7 +315,7 @@ public sealed class DoxDocument : Document
 
         if (((long)token & InlineValueMask) != 0)
         {
-            return Unsafe.As<int, float>(ref param);
+            return Unsafe.BitCast<int, float>(param);
         }
 
         return BinaryPrimitives.ReadDoubleLittleEndian(_source.Span.Slice(param));
@@ -529,7 +529,7 @@ public sealed class DoxDocument : Document
     internal static DToken WriteHalf(DocumentWriter w, Half value)
     {
         var fValue = (float)value;
-        var iValue = Unsafe.As<float, int>(ref fValue);
+        var iValue = Unsafe.BitCast<float, int>(fValue);
 
         return new DToken((long)(((ulong)DTokenVariant.FloatHalf << 56) | InlineValueMask |
                                  (uint)iValue));
@@ -538,7 +538,7 @@ public sealed class DoxDocument : Document
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static DToken WriteSingle(DocumentWriter w, float value)
     {
-        var iValue = Unsafe.As<float, int>(ref value);
+        var iValue = Unsafe.BitCast<float, int>(value);
 
         return new DToken((long)(((ulong)DTokenVariant.FloatSingle << 56) | InlineValueMask |
                                  (uint)iValue));
