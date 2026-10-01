@@ -13,6 +13,7 @@ public enum DTokenVariant
     TriviaLineComment = (DTokenKind.Trivia << 3) | TriviaKind.LineComment,
     TriviaSeparator = (DTokenKind.Trivia << 3) | TriviaKind.Separator,
     TriviaTag = (DTokenKind.Trivia << 3) | TriviaKind.Tag,
+    TriviaStyle = (DTokenKind.Trivia << 3) | TriviaKind.Style,
 
     BooleanFalse = (DTokenKind.Boolean << 3) | BooleanKind.False,
     BooleanTrue = (DTokenKind.Boolean << 3) | BooleanKind.True,

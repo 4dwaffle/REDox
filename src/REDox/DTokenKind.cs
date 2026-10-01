@@ -40,6 +40,7 @@ public enum TriviaKind
     LineComment,
     Separator,
     Tag,
+    Style,
     Inherit = 7
 }
 
