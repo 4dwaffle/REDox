@@ -30,7 +30,7 @@ What you get:
 
 * **High-performance serialization and deserialization** — on the benchmark datasets below, up to **~1.8x** faster sequential deserialization, up to **~2.8x** faster automatic parallel deserialization, and up to **~1.6x** faster serialization than System.Text.Json.
 * **Lower allocation on tested workloads** — for example, `canada.json` deserializes with about **2.56 MB** allocated by RE:Dox versus about **8.53 MB** by System.Text.Json.
-* **Multiple formats through one structural model** — JSON, JSON5, CBOR, MessagePack, and DOX are integrated with the core model; TOML, XML, HTML, INI, and CSV are currently preview components.
+JSON, JSON5, CBOR, MessagePack, INI, and DOX are integrated with the core model; TOML, XML, HTML, and CSV are currently preview components.
 * **One converter model across formats** — `DataConverter<T>` targets the format-agnostic `DataReader` / `DataWriter` abstractions instead of a specific wire format.
 * **Mutable token DOM** — edit objects and arrays without replacing the document with a heavyweight managed object tree.
 * **Trivia-preserving JSON5 editing** — comments and other preserved trivia can survive document edits and re-encoding.
@@ -223,7 +223,7 @@ NuGet package IDs use the `CAPCOM.REDox.*` prefix. C# namespaces use `REDox.*`.
 | `CAPCOM.REDox.Toml`                           | Preview | TOML parser/writer with comment-aware token DOM integration  |
 | `CAPCOM.REDox.Xml`                            | Preview | XML structural parser/writer                                 |
 | `CAPCOM.REDox.Html`                           | Preview | Practical HTML structural parser/writer                      |
-| `CAPCOM.REDox.Ini`                            | Preview | INI support                                                  |
+| `CAPCOM.REDox.Ini`                            | Public  | INI support                                                  |
 | `CAPCOM.REDox.Csv`                            | Preview | CSV support                                                  |
 
 Preview packages use NuGet pre-release versions such as `0.1.0-preview.1`; the package name itself does not include `-preview`. Preview components may change API behavior before stable release.
@@ -236,6 +236,7 @@ dotnet add package CAPCOM.REDox.Cbor
 dotnet add package CAPCOM.REDox.MessagePack
 dotnet add package CAPCOM.REDox.Dynamic
 dotnet add package CAPCOM.REDox.Serialization.DataContractJson
+dotnet add package CAPCOM.REDox.Ini
 ```
 
 Install preview packages with `--prerelease`:
@@ -246,7 +247,6 @@ dotnet add package CAPCOM.REDox.Serialization.NewtonsoftJson --prerelease
 dotnet add package CAPCOM.REDox.Toml --prerelease
 dotnet add package CAPCOM.REDox.Xml --prerelease
 dotnet add package CAPCOM.REDox.Html --prerelease
-dotnet add package CAPCOM.REDox.Ini --prerelease
 dotnet add package CAPCOM.REDox.Csv --prerelease
 ```
 
