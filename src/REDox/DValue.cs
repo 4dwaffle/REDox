@@ -1673,7 +1673,7 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
         return AsElement().ToObject(returnType);
     }
 
-    public object? ToObject(Type returnType, object target)
+    public object ToObject(Type returnType, object target)
     {
         return AsElement().ToObject(returnType, target);
     }
