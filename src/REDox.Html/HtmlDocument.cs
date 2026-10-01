@@ -223,6 +223,21 @@ public sealed class HtmlDocument : Document
         }
     }
 
+    public static void EncodeTo(DElement element, IBufferWriter<byte> bufferWriter,
+        HtmlWriteOptions options = default)
+    {
+        using (var cache = InstanceCache<Utf8TextWriter>.Get(() => new Utf8TextWriter()))
+        {
+            var writer = cache.Value;
+            var reader = new DataReader(element);
+
+            writer.Reset(bufferWriter, reader.Settings);
+            Write(writer, reader, reader.RootId, options);
+
+            writer.Dispose();
+        }
+    }
+
     private void Read(ReadOnlyMemory<byte> bytes, HtmlDocumentOptions options)
     {
         _source = bytes;
