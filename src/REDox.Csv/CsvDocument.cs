@@ -127,12 +127,20 @@ public sealed class CsvDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Csv" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static CsvDocument Parse(byte[] utf8Csv, SerializerSettings? settings = null,
         CsvDocumentOptions options = default)
     {
         return Parse(utf8Csv.AsMemory(), settings, options);
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Csv" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static CsvDocument Parse(ReadOnlyMemory<byte> utf8Csv, SerializerSettings? settings = null,
         CsvDocumentOptions options = default)
     {

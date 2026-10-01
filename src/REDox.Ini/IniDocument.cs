@@ -91,6 +91,10 @@ public sealed class IniDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="ini" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static IniDocument Parse(byte[] ini, SerializerSettings? settings = null,
         IniDocumentOptions options = default)
     {
@@ -120,6 +124,10 @@ public sealed class IniDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="ini" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static IniDocument Parse(ReadOnlyMemory<byte> ini, SerializerSettings? settings = null,
         IniDocumentOptions options = default)
     {

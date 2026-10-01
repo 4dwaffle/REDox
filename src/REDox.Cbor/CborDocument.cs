@@ -95,12 +95,20 @@ public sealed class CborDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="cbor" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static CborDocument Parse(byte[] cbor, SerializerSettings? settings = null,
         CborDocumentOptions options = default)
     {
         return Parse(cbor.AsMemory(), settings, options);
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="cbor" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static CborDocument Parse(ReadOnlyMemory<byte> cbor, SerializerSettings? settings = null,
         CborDocumentOptions options = default)
     {

@@ -106,6 +106,10 @@ public sealed class HtmlDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Html" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static HtmlDocument Parse(byte[] utf8Html, SerializerSettings? settings = null,
         HtmlDocumentOptions options = default)
     {
@@ -135,6 +139,10 @@ public sealed class HtmlDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Html" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static HtmlDocument Parse(ReadOnlyMemory<byte> utf8Html, SerializerSettings? settings = null,
         HtmlDocumentOptions options = default)
     {

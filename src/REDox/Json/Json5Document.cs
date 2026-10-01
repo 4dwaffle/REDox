@@ -113,6 +113,10 @@ public sealed class Json5Document : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="json5" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static Json5Document Parse(byte[] json5, SerializerSettings? settings = null,
         Json5DocumentOptions options = default)
     {
@@ -142,7 +146,11 @@ public sealed class Json5Document : Document
         }
     }
 
-    private static Json5Document Parse(ReadOnlyMemory<byte> json5, SerializerSettings? settings = null,
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="json5" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
+    public static Json5Document Parse(ReadOnlyMemory<byte> json5, SerializerSettings? settings = null,
         Json5DocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;

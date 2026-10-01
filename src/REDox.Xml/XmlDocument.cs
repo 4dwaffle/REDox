@@ -96,6 +96,10 @@ public sealed class XmlDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Xml" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static XmlDocument Parse(byte[] utf8Xml, SerializerSettings? settings = null,
         XmlDocumentOptions options = default)
     {
@@ -125,6 +129,10 @@ public sealed class XmlDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Xml" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static XmlDocument Parse(ReadOnlyMemory<byte> utf8Xml, SerializerSettings? settings = null,
         XmlDocumentOptions options = default)
     {

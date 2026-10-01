@@ -163,13 +163,21 @@ public sealed class JsonDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Json" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static JsonDocument Parse(byte[] utf8Json, SerializerSettings? settings = null,
         JsonDocumentOptions options = default)
     {
         return Parse(utf8Json.AsMemory(), settings, options);
     }
 
-    private static JsonDocument Parse(ReadOnlyMemory<byte> utf8Json, SerializerSettings? settings = null,
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="utf8Json" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
+    public static JsonDocument Parse(ReadOnlyMemory<byte> utf8Json, SerializerSettings? settings = null,
         JsonDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;

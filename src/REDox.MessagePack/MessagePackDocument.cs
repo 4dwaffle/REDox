@@ -124,12 +124,20 @@ public sealed class MessagePackDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="messagePack" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static MessagePackDocument Parse(byte[] messagePack, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {
         return Parse(messagePack.AsMemory(), settings, options);
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="messagePack" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static MessagePackDocument Parse(ReadOnlyMemory<byte> messagePack, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {

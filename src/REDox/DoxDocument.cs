@@ -103,12 +103,20 @@ public sealed class DoxDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="data" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static DoxDocument Parse(byte[] data, SerializerSettings? settings = null,
         DoxDocumentOptions options = default)
     {
         return Parse(data.AsMemory(), settings, options);
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="data" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static DoxDocument Parse(ReadOnlyMemory<byte> data, SerializerSettings? settings = null,
         DoxDocumentOptions options = default)
     {

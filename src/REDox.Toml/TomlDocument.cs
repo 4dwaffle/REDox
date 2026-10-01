@@ -162,6 +162,10 @@ public sealed class TomlDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="toml" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static TomlDocument Parse(byte[] toml, SerializerSettings? settings = null,
         TomlDocumentOptions options = default)
     {
@@ -191,6 +195,10 @@ public sealed class TomlDocument : Document
         }
     }
 
+    /// <remarks>
+    ///     The returned document takes ownership of <paramref name="toml" /> and references it without copying.
+    ///     The caller must not modify the buffer while the document is in use.
+    /// </remarks>
     public static TomlDocument Parse(ReadOnlyMemory<byte> toml, SerializerSettings? settings = null,
         TomlDocumentOptions options = default)
     {
