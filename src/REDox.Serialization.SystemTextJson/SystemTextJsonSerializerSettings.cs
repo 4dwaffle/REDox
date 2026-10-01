@@ -10,7 +10,6 @@ using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.Unicode;
 using REDox.Serialization.Converters;
 using REDox.Serialization.Metadata;
 
@@ -435,12 +434,12 @@ public class SystemTextJsonSerializerSettings : SerializerSettings
         return new JsonNamingPolicyAdapter(policy);
     }
 
-    private static UnicodeRange[] GetEscapeUnicodeRanges(
+    private static TextEscapeRange[] GetEscapeUnicodeRanges(
         JavaScriptEncoder encoder)
     {
         ArgumentNullException.ThrowIfNull(encoder);
 
-        var ranges = new List<UnicodeRange>();
+        var ranges = new List<TextEscapeRange>();
         var rangeStart = -1;
 
         for (var codePoint = 0; codePoint <= char.MaxValue; codePoint++)
@@ -459,7 +458,7 @@ public class SystemTextJsonSerializerSettings : SerializerSettings
             else if (rangeStart >= 0)
             {
                 ranges.Add(
-                    new UnicodeRange(
+                    new TextEscapeRange(
                         rangeStart,
                         codePoint - rangeStart));
 
@@ -470,7 +469,7 @@ public class SystemTextJsonSerializerSettings : SerializerSettings
         if (rangeStart >= 0)
         {
             ranges.Add(
-                new UnicodeRange(
+                new TextEscapeRange(
                     rangeStart,
                     0x10000 - rangeStart));
         }

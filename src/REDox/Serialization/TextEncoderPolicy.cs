@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
-using System.Text.Unicode;
 using System.Threading;
 
 namespace REDox.Serialization;
@@ -27,10 +26,10 @@ public sealed class TextEncoderPolicy
     public TextEncoderPolicy(TextEscapeMask escapeMask)
     {
         EscapeMask = escapeMask;
-        EscapeRanges = ReadOnlyMemory<UnicodeRange>.Empty;
+        EscapeRanges = ReadOnlyMemory<TextEscapeRange>.Empty;
     }
 
-    public TextEncoderPolicy(UnicodeRange[] escapeRanges, TextEscapeMask escapeMask = TextEscapeMask.None)
+    public TextEncoderPolicy(TextEscapeRange[] escapeRanges, TextEscapeMask escapeMask = TextEscapeMask.None)
     {
         foreach (var range in escapeRanges)
         {
@@ -41,7 +40,7 @@ public sealed class TextEncoderPolicy
         }
 
         EscapeMask = escapeMask;
-        EscapeRanges = (UnicodeRange[])escapeRanges.Clone();
+        EscapeRanges = (TextEscapeRange[])escapeRanges.Clone();
     }
 
     public TextEscapeMask EscapeMask { get; }
@@ -50,7 +49,7 @@ public sealed class TextEncoderPolicy
 
     public bool UpperCaseHexEscapes { get; init; }
 
-    public ReadOnlyMemory<UnicodeRange> EscapeRanges { get; }
+    public ReadOnlyMemory<TextEscapeRange> EscapeRanges { get; }
 
     public static TextEscapeMask GetEscapeMask(string text)
     {
