@@ -245,15 +245,14 @@ public sealed class IniDocument : Document
         }
     }
 
-    public static byte[] Encode(DElement element, SerializerSettings? settings = null,
-        IniWriteOptions options = default)
+    public static byte[] Encode(DElement element, IniWriteOptions options = default)
     {
         using (var cache = Helper.InstanceCache<Utf8TextWriter>.Get(() => new Utf8TextWriter()))
         {
             var writer = cache.Value;
             var reader = new DataReader(element);
 
-            writer.Reset(settings ?? reader.Settings, options.TextWriteOptions);
+            writer.Reset(reader.Settings, options.TextWriteOptions);
             Write(writer, in reader, options);
             return writer.Encode();
         }
