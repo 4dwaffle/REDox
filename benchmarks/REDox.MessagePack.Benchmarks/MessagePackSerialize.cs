@@ -51,8 +51,8 @@ public class MessagePackSerialize<T, U>
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(REDox))]
-    public byte[] REDoxSerialize()
+    [BenchmarkCategory("DOX")]
+    public byte[] REDoxDoxSerialize()
     {
         return DoxSerializer.Serialize<U>(_root!, SerializerSettings.Default);
     }

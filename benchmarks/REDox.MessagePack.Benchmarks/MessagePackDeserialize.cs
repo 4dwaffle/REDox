@@ -76,15 +76,15 @@ public class MessagePackDeserialize<T, U>
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(REDox))]
-    public U? REDoxDeserialize()
+    [BenchmarkCategory("DOX")]
+    public U? REDoxDoxDeserialize()
     {
         return DoxSerializer.Deserialize<U>(_dox);
     }
 
     [Benchmark]
-    [BenchmarkCategory(nameof(REDox))]
-    public U? REDoxParallelDeserialize()
+    [BenchmarkCategory("DOX")]
+    public U? REDoxDoxParallelDeserialize()
     {
         return DoxSerializer.Deserialize<U>(_dox, s_parallelSetting);
     }
