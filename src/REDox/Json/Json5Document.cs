@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using REDox.Serialization;
@@ -2346,16 +2345,7 @@ public sealed class Json5Document : Document
                 offset++;
             }
 
-            var value = Encoding.UTF8.GetString(span.Slice(offset + 2));
-
-            var bigInteger = BigInteger.Parse(value, NumberStyles.HexNumber);
-
-            if (minus)
-            {
-                bigInteger = -bigInteger;
-            }
-
-            return Encoding.UTF8.GetBytes(bigInteger.ToString());
+            return Utf8Helper.ConvertHexToDecimal(span.Slice(offset + 2), minus);
         }
 
         return span;

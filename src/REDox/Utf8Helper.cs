@@ -1701,4 +1701,93 @@ static class Utf8Helper
     {
         return Encoding.UTF8.GetString(utf8Bytes);
     }
+
+    public static byte[] ConvertHexToDecimal(ReadOnlySpan<byte> hexDigits, bool negative)
+    {
+        const uint limbBase = 1000000000;
+
+        if (hexDigits.IsEmpty)
+        {
+            throw new FormatException();
+        }
+
+        // little-endian limbs in base 10^9
+        var limbs = new uint[hexDigits.Length * 4 / 29 + 2];
+        var limbCount = 1;
+
+        foreach (var c in hexDigits)
+        {
+            int digit;
+            if (c is >= (byte)'0' and <= (byte)'9')
+            {
+                digit = c - '0';
+            }
+            else if (c is >= (byte)'a' and <= (byte)'f')
+            {
+                digit = c - 'a' + 10;
+            }
+            else if (c is >= (byte)'A' and <= (byte)'F')
+            {
+                digit = c - 'A' + 10;
+            }
+            else
+            {
+                throw new FormatException();
+            }
+
+            ulong carry = (uint)digit;
+            for (var i = 0; i < limbCount; i++)
+            {
+                var v = (ulong)limbs[i] * 16 + carry;
+                limbs[i] = (uint)(v % limbBase);
+                carry = v / limbBase;
+            }
+
+            if (carry != 0)
+            {
+                limbs[limbCount++] = (uint)carry;
+            }
+        }
+
+        var isZero = limbCount == 1 && limbs[0] == 0;
+        var sign = negative && !isZero ? 1 : 0;
+        var result = new byte[sign + CountDigits(limbs[limbCount - 1]) + (limbCount - 1) * 9];
+        var pos = result.Length;
+
+        for (var i = 0; i < limbCount - 1; i++)
+        {
+            var v = limbs[i];
+            for (var j = 0; j < 9; j++)
+            {
+                result[--pos] = (byte)('0' + v % 10);
+                v /= 10;
+            }
+        }
+
+        var top = limbs[limbCount - 1];
+        do
+        {
+            result[--pos] = (byte)('0' + top % 10);
+            top /= 10;
+        } while (top != 0);
+
+        if (sign != 0)
+        {
+            result[0] = (byte)'-';
+        }
+
+        return result;
+
+        static int CountDigits(uint v)
+        {
+            var n = 1;
+            while (v >= 10)
+            {
+                v /= 10;
+                n++;
+            }
+
+            return n;
+        }
+    }
 }
