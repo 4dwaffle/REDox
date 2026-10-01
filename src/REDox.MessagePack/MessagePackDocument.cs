@@ -80,14 +80,13 @@ public sealed class MessagePackDocument : Document
     public static MessagePackDocument Parse(Stream stream, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {
+        ArgumentNullException.ThrowIfNull(stream);
         settings ??= SerializerSettings.Default;
 
-        var len = (int)stream.Length;
-        var buffer = ArrayPool<byte>.Shared.Rent(len);
+        var buffer = Helper.ReadStream(stream, out var len, settings.DefaultBufferSize);
 
         try
         {
-            stream.ReadExactly(buffer.AsSpan().Slice(0, len));
             var rentedBuffer = buffer;
             buffer = null;
 
