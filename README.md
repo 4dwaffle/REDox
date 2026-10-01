@@ -485,8 +485,8 @@ var dcjSettings = new DataContractJsonSerializerSettings(
 Test and benchmark data (`simdjson-data`, `JSONTestSuite`, `json5-tests`, `toml-test`) live under `external/` as git submodules.
 
 ```powershell
-git clone --recurse-submodules https://github.com/capcom-td-oss/redox.git
-cd redox
+git clone --recurse-submodules https://github.com/CAPCOM-TD-OSS/REDox.git
+cd REDox
 ```
 
 If you already cloned without submodules:
