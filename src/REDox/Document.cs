@@ -22,16 +22,6 @@ public abstract partial class Document : IDisposable
         IsPooled = isPooled;
     }
 
-    protected void EnsureCapacity(int capacity)
-    {
-        capacity = Math.Max(capacity, 2);
-
-        if (_tokens.Length < capacity)
-        {
-            ExpandTokens(capacity);
-        }
-    }
-
     public DElement RootElement => new(this, RootId);
 
     public bool IsValid => RootId > 0;
@@ -44,6 +34,16 @@ public abstract partial class Document : IDisposable
     {
         Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    protected void EnsureCapacity(int capacity)
+    {
+        capacity = Math.Max(capacity, 2);
+
+        if (_tokens.Length < capacity)
+        {
+            ExpandTokens(capacity);
+        }
     }
 
     protected virtual void Dispose(bool disposing)
