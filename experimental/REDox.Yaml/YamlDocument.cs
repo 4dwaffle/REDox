@@ -115,7 +115,7 @@ public sealed class YamlDocument : Document
     {
         _source = bytes;
 
-        Capacity = _source.Length / 16;
+        EnsureCapacity(_source.Length / 16);
 
         var rootId = ParseYaml(_source.Span, options);
 

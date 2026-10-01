@@ -55,7 +55,7 @@ public sealed class Json5Document : Document
     {
         settings ??= SerializerSettings.Default;
         document = new Json5Document(settings);
-        document.Capacity = json5.Length / 16;
+        document.EnsureCapacity(json5.Length / 16);
 
         var error = document.ParseJson5(json5, out var rootId, options);
 
@@ -268,7 +268,7 @@ public sealed class Json5Document : Document
 
         _source = source;
 
-        Capacity = _source.Length / 16;
+        EnsureCapacity(_source.Length / 16);
 
         {
             var error = ParseJson5(_source.Span, out var rootId, options);

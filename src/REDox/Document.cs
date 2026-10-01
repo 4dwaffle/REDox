@@ -22,18 +22,13 @@ public abstract partial class Document : IDisposable
         IsPooled = isPooled;
     }
 
-    public int Capacity
+    protected void EnsureCapacity(int capacity)
     {
-        get => _tokens.Length;
-        set
-        {
-            var capacity = Math.Max(value, 2);
-            var tokens = _tokens;
+        capacity = Math.Max(capacity, 2);
 
-            if (tokens.Length < capacity)
-            {
-                ExpandTokens(capacity);
-            }
+        if (_tokens.Length < capacity)
+        {
+            ExpandTokens(capacity);
         }
     }
 

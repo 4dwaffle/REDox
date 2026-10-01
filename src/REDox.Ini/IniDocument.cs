@@ -175,15 +175,14 @@ public sealed class IniDocument : Document
             ReadOnlyMemory<byte> source = buffer.AsMemory(0, ini.Length);
             document = new IniDocument(settings)
             {
-                _rentedBuffer = buffer,
-                Capacity = source.Length / 16
+                _rentedBuffer = buffer
             };
             buffer = null;
 
             Utf8Helper.SkipUtf8Bom(ref source);
 
             document._source = source;
-            document.Capacity = source.Length / 16;
+            document.EnsureCapacity(source.Length / 16);
 
             var parseException = document.ParseIni(source.Span, options);
 
@@ -279,7 +278,7 @@ public sealed class IniDocument : Document
 
         _source = bytes;
 
-        Capacity = bytes.Length / 16;
+        EnsureCapacity(bytes.Length / 16);
 
         var parseException = ParseIni(bytes.Span, options);
 

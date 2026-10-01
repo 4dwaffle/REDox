@@ -55,7 +55,7 @@ public sealed class MessagePackDocument : Document
         settings ??= SerializerSettings.Default;
 
         document = new MessagePackDocument(settings);
-        document.Capacity = messagePack.Length / 16;
+        document.EnsureCapacity(messagePack.Length / 16);
 
         var error = document.ParseMessagePack(messagePack, out var bytesConsumed, options);
 
@@ -234,7 +234,7 @@ public sealed class MessagePackDocument : Document
     {
         var index = 0;
 
-        Capacity = bytes.Length / 8;
+        EnsureCapacity(bytes.Length / 8);
 
         _source = bytes;
 

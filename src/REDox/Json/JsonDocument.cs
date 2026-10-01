@@ -59,7 +59,7 @@ public sealed class JsonDocument : Document
         settings ??= SerializerSettings.Default;
 
         document = new JsonDocument(settings);
-        document.Capacity = utf8Json.Length / 16;
+        document.EnsureCapacity(utf8Json.Length / 16);
 
         var error = options.UseNewlineDelimitedFormat
             ? document.ParseNDJson(utf8Json, options)
@@ -508,7 +508,7 @@ public sealed class JsonDocument : Document
         Utf8Helper.SkipUtf8Bom(ref source);
 
         _source = source;
-        Capacity = _source.Length / 16;
+        EnsureCapacity(_source.Length / 16);
 
         {
             var error = options.UseNewlineDelimitedFormat

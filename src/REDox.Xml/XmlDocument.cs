@@ -134,7 +134,7 @@ public sealed class XmlDocument : Document
 
         try
         {
-            doc.Capacity = utf8Bytes.Length / 16;
+            doc.EnsureCapacity(utf8Bytes.Length / 16);
             doc.Read(utf8Bytes, options);
             return doc;
         }
@@ -157,7 +157,7 @@ public sealed class XmlDocument : Document
 
         try
         {
-            doc.Capacity = utf8Bytes.Length / 16;
+            doc.EnsureCapacity(utf8Bytes.Length / 16);
             doc.Read(utf8Bytes, options);
             return doc;
         }

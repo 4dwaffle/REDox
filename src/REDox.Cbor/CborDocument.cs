@@ -149,7 +149,7 @@ public sealed class CborDocument : Document
         settings ??= SerializerSettings.Default;
 
         document = new CborDocument(settings);
-        document.Capacity = cbor.Length / 8;
+        document.EnsureCapacity(cbor.Length / 8);
 
         var error = document.ParseCbor(cbor.Span, out var bytesConsumed, options);
 
@@ -217,7 +217,7 @@ public sealed class CborDocument : Document
 
     private void Read(ReadOnlyMemory<byte> bytes, CborDocumentOptions options)
     {
-        Capacity = bytes.Length / 8;
+        EnsureCapacity(bytes.Length / 8);
 
         var bytesConsumed = 0;
 

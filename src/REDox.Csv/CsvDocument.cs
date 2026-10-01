@@ -39,10 +39,8 @@ public sealed class CsvDocument : Document
     {
         settings ??= SerializerSettings.Default;
 
-        document = new CsvDocument(settings)
-        {
-            Capacity = utf8Csv.Length / 16
-        };
+        document = new CsvDocument(settings);
+        document.EnsureCapacity(utf8Csv.Length / 16);
 
         var parseException = document.ParseCsv(utf8Csv, options);
 
@@ -240,7 +238,7 @@ public sealed class CsvDocument : Document
     private void Read(ReadOnlyMemory<byte> bytes, CsvDocumentOptions options)
     {
         _source = bytes;
-        Capacity = _source.Length / 16;
+        EnsureCapacity(_source.Length / 16);
 
         var parseException = ParseCsv(bytes.Span, options);
         if (parseException != null)

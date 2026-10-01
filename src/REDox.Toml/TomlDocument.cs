@@ -100,7 +100,7 @@ public sealed class TomlDocument : Document
 
         document = new TomlDocument(settings);
         document._rentedBuffer = buffer;
-        document.Capacity = toml.Length / 16;
+        document.EnsureCapacity(toml.Length / 16);
 
         var source = buffer.AsMemory(0, toml.Length);
 
@@ -289,7 +289,7 @@ public sealed class TomlDocument : Document
     {
         Utf8Helper.SkipUtf8Bom(ref bytes);
 
-        Capacity = bytes.Length / 16;
+        EnsureCapacity(bytes.Length / 16);
 
         var error = ReadCore(bytes, options);
 

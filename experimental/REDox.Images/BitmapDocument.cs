@@ -114,7 +114,7 @@ public class BitmapDocument : Document
     {
         _source = buffer;
 
-        Capacity = 256;
+        EnsureCapacity(256);
 
         var bytes = buffer.Span;
         var rootId = AllocToken(DToken.MakeMap(0));

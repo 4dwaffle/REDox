@@ -144,7 +144,7 @@ public sealed class HtmlDocument : Document
 
         try
         {
-            doc.Capacity = utf8html.Length / 16;
+            doc.EnsureCapacity(utf8html.Length / 16);
             doc.Read(utf8html, options);
             return doc;
         }
@@ -167,7 +167,7 @@ public sealed class HtmlDocument : Document
 
         try
         {
-            doc.Capacity = utf8html.Length / 16;
+            doc.EnsureCapacity(utf8html.Length / 16);
             doc.Read(utf8html, options);
             return doc;
         }
