@@ -15,13 +15,10 @@ public sealed class MessagePackSerializer : Serializer
         ArgumentNullException.ThrowIfNull(stream);
         settings ??= SerializerSettings.Default;
 
-        var len = (int)stream.Length;
-        var buffer = ArrayPool<byte>.Shared.Rent(len);
+        var buffer = Helper.ReadStream(stream, out var len, settings.DefaultBufferSize);
 
         try
         {
-            stream.ReadExactly(buffer, 0, len);
-
             return Deserialize<TValue>(buffer.AsMemory(0, len), settings, options);
         }
         finally
@@ -69,13 +66,10 @@ public sealed class MessagePackSerializer : Serializer
         ArgumentNullException.ThrowIfNull(target);
         settings ??= SerializerSettings.Default;
 
-        var len = (int)stream.Length;
-        var buffer = ArrayPool<byte>.Shared.Rent(len);
+        var buffer = Helper.ReadStream(stream, out var len, settings.DefaultBufferSize);
 
         try
         {
-            stream.ReadExactly(buffer, 0, len);
-
             return DeserializeTo<TValue>(buffer.AsMemory(0, len), target, settings, options);
         }
         finally
