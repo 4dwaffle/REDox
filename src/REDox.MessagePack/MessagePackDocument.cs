@@ -77,17 +77,17 @@ public sealed class MessagePackDocument : Document
     }
 
 
-    public static MessagePackDocument Parse(Stream readStream, SerializerSettings? settings = null,
+    public static MessagePackDocument Parse(Stream stream, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
 
-        var len = (int)readStream.Length;
+        var len = (int)stream.Length;
         var buffer = ArrayPool<byte>.Shared.Rent(len);
 
         try
         {
-            readStream.ReadExactly(buffer.AsSpan().Slice(0, len));
+            stream.ReadExactly(buffer.AsSpan().Slice(0, len));
             var rentedBuffer = buffer;
             buffer = null;
 
@@ -102,19 +102,19 @@ public sealed class MessagePackDocument : Document
         }
     }
 
-    public static MessagePackDocument Parse(ReadOnlySpan<byte> massagePack, SerializerSettings? settings = null,
+    public static MessagePackDocument Parse(ReadOnlySpan<byte> messagePack, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
-        var buffer = ArrayPool<byte>.Shared.Rent(massagePack.Length);
+        var buffer = ArrayPool<byte>.Shared.Rent(messagePack.Length);
 
         try
         {
-            massagePack.CopyTo(buffer.AsSpan());
+            messagePack.CopyTo(buffer.AsSpan());
             var rentedBuffer = buffer;
             buffer = null;
 
-            return ParseRented(rentedBuffer.AsMemory().Slice(0, massagePack.Length), rentedBuffer, settings, options);
+            return ParseRented(rentedBuffer.AsMemory().Slice(0, messagePack.Length), rentedBuffer, settings, options);
         }
         finally
         {
@@ -125,13 +125,13 @@ public sealed class MessagePackDocument : Document
         }
     }
 
-    public static MessagePackDocument Parse(byte[] massagePack, SerializerSettings? settings = null,
+    public static MessagePackDocument Parse(byte[] messagePack, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {
-        return Parse(massagePack.AsMemory(), settings, options);
+        return Parse(messagePack.AsMemory(), settings, options);
     }
 
-    public static MessagePackDocument Parse(ReadOnlyMemory<byte> massagePack, SerializerSettings? settings = null,
+    public static MessagePackDocument Parse(ReadOnlyMemory<byte> messagePack, SerializerSettings? settings = null,
         MessagePackDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
@@ -140,7 +140,7 @@ public sealed class MessagePackDocument : Document
 
         try
         {
-            doc.Read(massagePack, options);
+            doc.Read(messagePack, options);
             return doc;
         }
         catch
@@ -150,7 +150,7 @@ public sealed class MessagePackDocument : Document
         }
     }
 
-    private static MessagePackDocument ParseRented(ReadOnlyMemory<byte> massagePack, byte[] rentedBuffer,
+    private static MessagePackDocument ParseRented(ReadOnlyMemory<byte> messagePack, byte[] rentedBuffer,
         SerializerSettings? settings = null, MessagePackDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
@@ -162,7 +162,7 @@ public sealed class MessagePackDocument : Document
 
         try
         {
-            doc.Read(massagePack, options);
+            doc.Read(messagePack, options);
             return doc;
         }
         catch

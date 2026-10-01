@@ -16,14 +16,14 @@ public static class JsonSequence
     private const int MinimumBufferSize = 1024;
 
     public static async IAsyncEnumerable<T?> DeserializeAsync<T>(
-        Stream readStream,
+        Stream stream,
         SerializerSettings? settings = null,
         JsonDocumentOptions options = default,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        await foreach (var element in ParseAsync(readStream, settings, options, cancellationToken)
+        await foreach (var element in ParseAsync(stream, settings, options, cancellationToken)
                            .ConfigureAwait(false))
         {
             yield return element.To<T>();
@@ -39,12 +39,12 @@ public static class JsonSequence
     ///     the value (e.g. <c>To&lt;T&gt;()</c>) if it must be retained beyond that scope.
     /// </remarks>
     public static async IAsyncEnumerable<DElement> ParseAsync(
-        Stream readStream,
+        Stream stream,
         SerializerSettings? settings = null,
         JsonDocumentOptions options = default,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
         settings ??= SerializerSettings.Default;
 
         // Encoding cannot be detected in the middle of a stream, so always treat the data as UTF8.
@@ -72,7 +72,7 @@ public static class JsonSequence
                     Grow(ref buffer, length);
                 }
 
-                var readBytes = await readStream
+                var readBytes = await stream
                     .ReadAsync(buffer.AsMemory(length), cancellationToken)
                     .ConfigureAwait(false);
 

@@ -106,25 +106,25 @@ public sealed class HtmlDocument : Document
         }
     }
 
-    public static HtmlDocument Parse(byte[] utf8html, SerializerSettings? settings = null,
+    public static HtmlDocument Parse(byte[] utf8Html, SerializerSettings? settings = null,
         HtmlDocumentOptions options = default)
     {
-        return Parse(utf8html.AsMemory(), settings, options);
+        return Parse(utf8Html.AsMemory(), settings, options);
     }
 
-    public static HtmlDocument Parse(ReadOnlySpan<byte> utf8html, SerializerSettings? settings = null,
+    public static HtmlDocument Parse(ReadOnlySpan<byte> utf8Html, SerializerSettings? settings = null,
         HtmlDocumentOptions options = default)
     {
-        var buffer = ArrayPool<byte>.Shared.Rent(utf8html.Length);
+        var buffer = ArrayPool<byte>.Shared.Rent(utf8Html.Length);
 
         try
         {
-            utf8html.CopyTo(buffer);
+            utf8Html.CopyTo(buffer);
 
             var rentedBuffer = buffer;
             buffer = null;
 
-            return ParseRented(rentedBuffer.AsMemory().Slice(0, utf8html.Length), rentedBuffer, settings, options);
+            return ParseRented(rentedBuffer.AsMemory().Slice(0, utf8Html.Length), rentedBuffer, settings, options);
         }
         finally
         {
@@ -135,7 +135,7 @@ public sealed class HtmlDocument : Document
         }
     }
 
-    public static HtmlDocument Parse(ReadOnlyMemory<byte> utf8html, SerializerSettings? settings = null,
+    public static HtmlDocument Parse(ReadOnlyMemory<byte> utf8Html, SerializerSettings? settings = null,
         HtmlDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
@@ -144,8 +144,8 @@ public sealed class HtmlDocument : Document
 
         try
         {
-            doc.EnsureCapacity(utf8html.Length / 16);
-            doc.Read(utf8html, options);
+            doc.EnsureCapacity(utf8Html.Length / 16);
+            doc.Read(utf8Html, options);
             return doc;
         }
         catch
@@ -155,7 +155,7 @@ public sealed class HtmlDocument : Document
         }
     }
 
-    private static HtmlDocument ParseRented(ReadOnlyMemory<byte> utf8html, byte[] rentedBuffer,
+    private static HtmlDocument ParseRented(ReadOnlyMemory<byte> utf8Html, byte[] rentedBuffer,
         SerializerSettings? settings = null, HtmlDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
@@ -167,8 +167,8 @@ public sealed class HtmlDocument : Document
 
         try
         {
-            doc.EnsureCapacity(utf8html.Length / 16);
-            doc.Read(utf8html, options);
+            doc.EnsureCapacity(utf8Html.Length / 16);
+            doc.Read(utf8Html, options);
             return doc;
         }
         catch

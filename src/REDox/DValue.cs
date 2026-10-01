@@ -23,9 +23,9 @@ public readonly partial struct DValue : IDoxNode, IEquatable<DValue>
         Instance = DTokenVariant.Null
     };
 
-    public static implicit operator DElement(DValue v)
+    public static implicit operator DElement(DValue value)
     {
-        return v.AsElement();
+        return value.AsElement();
     }
 
     public int Count => AsElement().GetValueCount();

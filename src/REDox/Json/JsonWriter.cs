@@ -454,21 +454,21 @@ public sealed class JsonWriter : DataWriter, IDisposable, IAsyncDisposable
         state -= 2;
     }
 
-    protected internal override void WritePropertyString(Utf8Symbol propertyName, string? text)
+    protected internal override void WritePropertyString(Utf8Symbol propertyName, string? value)
     {
         var w = _writer;
 
-        if (_indented || text == null || (propertyName.EscapeMask & _encoder.EscapeMask) != 0)
+        if (_indented || value == null || (propertyName.EscapeMask & _encoder.EscapeMask) != 0)
         {
-            base.WritePropertyString(propertyName, text);
+            base.WritePropertyString(propertyName, value);
             return;
         }
 
         ref var state = ref w.PeekContext();
 
-        var buf = w.BeginWrite(propertyName.ByteLength + text.Length * 6 + 8);
+        var buf = w.BeginWrite(propertyName.ByteLength + value.Length * 6 + 8);
         var pt = EncodePropertyName(buf, propertyName, state < -2);
-        pt += _encoder.Encode(buf.Slice(pt), text);
+        pt += _encoder.Encode(buf.Slice(pt), value);
         w.EndWrite(pt);
 
         state -= 2;

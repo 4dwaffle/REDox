@@ -103,12 +103,12 @@ public sealed class CsvDocument : Document
         }
     }
 
-    public static CsvDocument Parse(Stream readStream, SerializerSettings? settings = null,
+    public static CsvDocument Parse(Stream stream, SerializerSettings? settings = null,
         CsvDocumentOptions options = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        var buffer = Helper.ReadStream(readStream, out var length,
+        var buffer = Helper.ReadStream(stream, out var length,
             (settings ?? SerializerSettings.Default).DefaultBufferSize);
 
         try

@@ -112,19 +112,19 @@ public abstract class DContainer : IDoxNode
         return Serializer.DeserializeInternal<T>(_element);
     }
 
-    public object? ToObject(Type type)
+    public object? ToObject(Type returnType)
     {
-        ArgumentNullException.ThrowIfNull(type);
+        ArgumentNullException.ThrowIfNull(returnType);
         ThrowIfInvalid();
-        return Serializer.DeserializeInternal(_element, type);
+        return Serializer.DeserializeInternal(_element, returnType);
     }
 
-    public object ToObject(Type type, object target)
+    public object ToObject(Type returnType, object target)
     {
-        ArgumentNullException.ThrowIfNull(type);
+        ArgumentNullException.ThrowIfNull(returnType);
         ArgumentNullException.ThrowIfNull(target);
         ThrowIfInvalid();
-        return Serializer.DeserializeToInternal(_element, type, target);
+        return Serializer.DeserializeToInternal(_element, returnType, target);
     }
 
     public void WriteTo(DataWriter writer)

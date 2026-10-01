@@ -395,9 +395,9 @@ public sealed partial class DMap : DContainer, IList<KeyValuePair<DValue, DValue
         base.Release();
     }
 
-    public static implicit operator DElement(DMap v)
+    public static implicit operator DElement(DMap value)
     {
-        return v._element;
+        return value._element;
     }
 
     public DObject AsObject()

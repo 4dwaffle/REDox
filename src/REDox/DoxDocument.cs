@@ -57,12 +57,12 @@ public sealed class DoxDocument : Document
         return CreateSnapshot<DoxDocument>();
     }
 
-    public static DoxDocument Parse(Stream readStream, SerializerSettings? settings = null,
+    public static DoxDocument Parse(Stream stream, SerializerSettings? settings = null,
         DoxDocumentOptions options = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        var buffer = Helper.ReadStream(readStream, out var len,
+        var buffer = Helper.ReadStream(stream, out var len,
             (settings ?? SerializerSettings.Default).DefaultBufferSize);
 
         try

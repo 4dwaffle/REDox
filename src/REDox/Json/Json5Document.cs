@@ -181,12 +181,12 @@ public sealed class Json5Document : Document
         }
     }
 
-    public static Json5Document Parse(Stream readStream, SerializerSettings? settings = null,
+    public static Json5Document Parse(Stream stream, SerializerSettings? settings = null,
         Json5DocumentOptions options = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        var buffer = Helper.ReadStream(readStream, out var len,
+        var buffer = Helper.ReadStream(stream, out var len,
             (settings ?? SerializerSettings.Default).DefaultBufferSize);
 
         try

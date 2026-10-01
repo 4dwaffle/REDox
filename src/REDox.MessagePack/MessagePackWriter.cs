@@ -409,7 +409,7 @@ public sealed class MessagePackWriter : DataWriter, IDisposable, IAsyncDisposabl
         }
     }
 
-    protected internal override void WritePropertyString(Utf8Symbol propertyName, string? text)
+    protected internal override void WritePropertyString(Utf8Symbol propertyName, string? value)
     {
         var w = _writer;
 
@@ -420,9 +420,9 @@ public sealed class MessagePackWriter : DataWriter, IDisposable, IAsyncDisposabl
         }
 
         WriteStringValue(w, propertyName, OldSpec);
-        if (text != null)
+        if (value != null)
         {
-            WriteStringValue(w, text, OldSpec);
+            WriteStringValue(w, value, OldSpec);
         }
         else
         {

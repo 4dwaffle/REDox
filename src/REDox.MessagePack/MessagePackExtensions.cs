@@ -10,10 +10,10 @@ public static class MessagePackExtensions
 {
     extension(DValue doxValue)
     {
-        public static DValue ParseMessagePack(ReadOnlySpan<byte> cbor, SerializerSettings? settings = null,
+        public static DValue ParseMessagePack(ReadOnlySpan<byte> messagePack, SerializerSettings? settings = null,
             MessagePackDocumentOptions options = default)
         {
-            using var doc = MessagePackDocument.Parse(cbor, settings, options);
+            using var doc = MessagePackDocument.Parse(messagePack, settings, options);
 
             return doc.Duplicate().RootElement.AsValue();
         }

@@ -55,7 +55,7 @@ public sealed class CborSerializer : Serializer
         }
     }
 
-    public static object DeserializeTo(ReadOnlyMemory<byte> bytes, object target, Type returnType,
+    public static object DeserializeTo(ReadOnlyMemory<byte> bytes, Type returnType, object target,
         SerializerSettings? settings = null,
         CborDocumentOptions options = default)
     {

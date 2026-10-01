@@ -313,7 +313,7 @@ public sealed class CborWriter : DataWriter, IDisposable, IAsyncDisposable
     }
 
 
-    protected internal override void WritePropertyString(Utf8Symbol propertyName, string? text)
+    protected internal override void WritePropertyString(Utf8Symbol propertyName, string? value)
     {
         var w = _writer;
 
@@ -321,9 +321,9 @@ public sealed class CborWriter : DataWriter, IDisposable, IAsyncDisposable
         state -= 2;
 
         WriteStringValue(w, propertyName);
-        if (text != null)
+        if (value != null)
         {
-            WriteStringValue(w, text);
+            WriteStringValue(w, value);
         }
         else
         {

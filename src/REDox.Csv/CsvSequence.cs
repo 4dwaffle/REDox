@@ -16,14 +16,14 @@ public static class CsvSequence
     private const int MinimumBufferSize = 1024;
 
     public static async IAsyncEnumerable<T?> DeserializeAsync<T>(
-        Stream readStream,
+        Stream stream,
         SerializerSettings? settings = null,
         CsvDocumentOptions options = default,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        await foreach (var element in ParseAsync(readStream, settings, options, cancellationToken)
+        await foreach (var element in ParseAsync(stream, settings, options, cancellationToken)
                            .ConfigureAwait(false))
         {
             yield return element.To<T>();
@@ -39,12 +39,12 @@ public static class CsvSequence
     ///     the value (e.g. <c>To&lt;T&gt;()</c>) if it must be retained beyond that scope.
     /// </remarks>
     public static async IAsyncEnumerable<DElement> ParseAsync(
-        Stream readStream,
+        Stream stream,
         SerializerSettings? settings = null,
         CsvDocumentOptions options = default,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
         settings ??= SerializerSettings.Default;
 
         var buffer = ArrayPool<byte>.Shared.Rent(
@@ -69,7 +69,7 @@ public static class CsvSequence
                     Grow(ref buffer, length);
                 }
 
-                var readBytes = await readStream
+                var readBytes = await stream
                     .ReadAsync(buffer.AsMemory(length), cancellationToken)
                     .ConfigureAwait(false);
 

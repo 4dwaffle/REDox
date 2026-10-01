@@ -86,18 +86,18 @@ public static class JsonExtensions
             return doc.Duplicate().RootElement.AsValue();
         }
 
-        public static DValue ParseJson5(string json, SerializerSettings? settings = null,
+        public static DValue ParseJson5(string json5, SerializerSettings? settings = null,
             Json5DocumentOptions options = default)
         {
-            using var doc = Json5Document.Parse(json, settings, options);
+            using var doc = Json5Document.Parse(json5, settings, options);
 
             return doc.Duplicate().RootElement.AsValue();
         }
 
-        public static DValue ParseJson5(ReadOnlySpan<byte> utf8Json, SerializerSettings? settings = null,
+        public static DValue ParseJson5(ReadOnlySpan<byte> json5, SerializerSettings? settings = null,
             Json5DocumentOptions options = default)
         {
-            using var doc = Json5Document.Parse(utf8Json, settings, options);
+            using var doc = Json5Document.Parse(json5, settings, options);
 
             return doc.Duplicate().RootElement.AsValue();
         }

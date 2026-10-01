@@ -96,25 +96,25 @@ public sealed class XmlDocument : Document
         }
     }
 
-    public static XmlDocument Parse(byte[] utf8Bytes, SerializerSettings? settings = null,
+    public static XmlDocument Parse(byte[] utf8Xml, SerializerSettings? settings = null,
         XmlDocumentOptions options = default)
     {
-        return Parse(utf8Bytes.AsMemory(), settings, options);
+        return Parse(utf8Xml.AsMemory(), settings, options);
     }
 
-    public static XmlDocument Parse(ReadOnlySpan<byte> utf8Bytes, SerializerSettings? settings = null,
+    public static XmlDocument Parse(ReadOnlySpan<byte> utf8Xml, SerializerSettings? settings = null,
         XmlDocumentOptions options = default)
     {
-        var buffer = ArrayPool<byte>.Shared.Rent(utf8Bytes.Length);
+        var buffer = ArrayPool<byte>.Shared.Rent(utf8Xml.Length);
 
         try
         {
-            utf8Bytes.CopyTo(buffer);
+            utf8Xml.CopyTo(buffer);
 
             var rentedBuffer = buffer;
             buffer = null;
 
-            return ParseRented(rentedBuffer.AsMemory().Slice(0, utf8Bytes.Length), rentedBuffer, settings, options);
+            return ParseRented(rentedBuffer.AsMemory().Slice(0, utf8Xml.Length), rentedBuffer, settings, options);
         }
         finally
         {
@@ -125,7 +125,7 @@ public sealed class XmlDocument : Document
         }
     }
 
-    public static XmlDocument Parse(ReadOnlyMemory<byte> utf8Bytes, SerializerSettings? settings = null,
+    public static XmlDocument Parse(ReadOnlyMemory<byte> utf8Xml, SerializerSettings? settings = null,
         XmlDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
@@ -134,8 +134,8 @@ public sealed class XmlDocument : Document
 
         try
         {
-            doc.EnsureCapacity(utf8Bytes.Length / 16);
-            doc.Read(utf8Bytes, options);
+            doc.EnsureCapacity(utf8Xml.Length / 16);
+            doc.Read(utf8Xml, options);
             return doc;
         }
         catch
@@ -145,7 +145,7 @@ public sealed class XmlDocument : Document
         }
     }
 
-    private static XmlDocument ParseRented(ReadOnlyMemory<byte> utf8Bytes, byte[] rentedBuffer,
+    private static XmlDocument ParseRented(ReadOnlyMemory<byte> utf8Xml, byte[] rentedBuffer,
         SerializerSettings? settings = null, XmlDocumentOptions options = default)
     {
         settings ??= SerializerSettings.Default;
@@ -157,8 +157,8 @@ public sealed class XmlDocument : Document
 
         try
         {
-            doc.EnsureCapacity(utf8Bytes.Length / 16);
-            doc.Read(utf8Bytes, options);
+            doc.EnsureCapacity(utf8Xml.Length / 16);
+            doc.Read(utf8Xml, options);
             return doc;
         }
         catch

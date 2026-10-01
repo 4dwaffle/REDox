@@ -118,12 +118,12 @@ public sealed class JsonDocument : Document
         }
     }
 
-    public static JsonDocument Parse(Stream readStream, SerializerSettings? settings = null,
+    public static JsonDocument Parse(Stream stream, SerializerSettings? settings = null,
         JsonDocumentOptions options = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        var buffer = ReadStream(readStream, out var len, (settings ?? SerializerSettings.Default).DefaultBufferSize);
+        var buffer = ReadStream(stream, out var len, (settings ?? SerializerSettings.Default).DefaultBufferSize);
 
         try
         {

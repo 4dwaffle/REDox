@@ -49,12 +49,12 @@ public sealed class CborDocument : Document
         return CreateSnapshot<CborDocument>();
     }
 
-    public static CborDocument Parse(Stream readStream, SerializerSettings? settings = null,
+    public static CborDocument Parse(Stream stream, SerializerSettings? settings = null,
         CborDocumentOptions options = default)
     {
-        ArgumentNullException.ThrowIfNull(readStream);
+        ArgumentNullException.ThrowIfNull(stream);
 
-        var buffer = Helper.ReadStream(readStream, out var len,
+        var buffer = Helper.ReadStream(stream, out var len,
             (settings ?? SerializerSettings.Default).DefaultBufferSize);
 
         try
