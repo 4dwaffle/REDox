@@ -12,11 +12,11 @@ namespace REDox.Xml;
 
 public sealed class XmlDocument : Document
 {
-    public static readonly byte[] XmlQuot = Encoding.UTF8.GetBytes("&quot;");
-    public static readonly byte[] XmlApos = Encoding.UTF8.GetBytes("&apos;");
-    public static readonly byte[] XmlLt = Encoding.UTF8.GetBytes("&lt;");
-    public static readonly byte[] XmlGt = Encoding.UTF8.GetBytes("&gt;");
-    public static readonly byte[] XmlAmp = Encoding.UTF8.GetBytes("&amp;");
+    private static readonly byte[] XmlQuot = Encoding.UTF8.GetBytes("&quot;");
+    private static readonly byte[] XmlApos = Encoding.UTF8.GetBytes("&apos;");
+    private static readonly byte[] XmlLt = Encoding.UTF8.GetBytes("&lt;");
+    private static readonly byte[] XmlGt = Encoding.UTF8.GetBytes("&gt;");
+    private static readonly byte[] XmlAmp = Encoding.UTF8.GetBytes("&amp;");
 
     private byte[]? _rentedBuffer;
     private ReadOnlyMemory<byte> _source;
