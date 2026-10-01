@@ -34,7 +34,7 @@ public static class CborExtensions
                 return [];
             }
 
-            return CborDocument.Encode(doxValue.AsElement());
+            return CborDocument.Encode(doxValue.AsElement(), options);
         }
     }
 
@@ -47,7 +47,7 @@ public static class CborExtensions
                 return [];
             }
 
-            return CborDocument.Encode(element);
+            return CborDocument.Encode(element, options);
         }
     }
 }

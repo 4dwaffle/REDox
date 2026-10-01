@@ -34,7 +34,7 @@ public static class MessagePackExtensions
                 return [];
             }
 
-            return MessagePackDocument.Encode(doxValue.AsElement());
+            return MessagePackDocument.Encode(doxValue.AsElement(), options);
         }
     }
 
@@ -47,7 +47,7 @@ public static class MessagePackExtensions
                 return [];
             }
 
-            return MessagePackDocument.Encode(element);
+            return MessagePackDocument.Encode(element, options);
         }
     }
 }
