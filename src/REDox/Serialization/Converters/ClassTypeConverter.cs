@@ -6,10 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using REDox.Serialization.Metadata;
-
-#pragma warning disable SYSLIB0050
 
 namespace REDox.Serialization.Converters;
 
@@ -784,7 +783,7 @@ sealed class ClassTypeConverter : DataConverterFactory
 
             if (ctor == null)
             {
-                _defaultConstructor = () => (T)FormatterServices.GetUninitializedObject(typeof(T));
+                _defaultConstructor = () => (T)RuntimeHelpers.GetUninitializedObject(typeof(T));
                 return;
             }
 
@@ -1737,7 +1736,7 @@ sealed class ClassTypeConverter : DataConverterFactory
 
             if (_constructor == null)
             {
-                return FormatterServices.GetUninitializedObject(_type);
+                return RuntimeHelpers.GetUninitializedObject(_type);
             }
 
             if (_constructor.GetParameters().Length == 0)
