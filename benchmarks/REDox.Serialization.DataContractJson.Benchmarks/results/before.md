@@ -6,8 +6,8 @@ AMD Ryzen 9 9950X 4.30GHz, 1 CPU, 32 logical and 16 physical cores
   [Host]     : .NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v4
   Job-HDUCDG : .NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v4
 
-IterationCount=8  IterationTime=250ms  LaunchCount=1  
-WarmupCount=3  
+IterationCount=8  IterationTime=250ms  LaunchCount=1
+WarmupCount=3
 
 ```
 | Method      | Format             | Count | Mean         | Error      | StdDev     | Gen0   | Allocated |
