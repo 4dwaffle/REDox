@@ -902,6 +902,21 @@ public class Utf8HelperTests
         Assert.Equal(DateTime.UnixEpoch, value);
     }
 
+    [Theory]
+    [InlineData("/Date(1705285810000+0900)/", 9)]
+    [InlineData("/Date(1705285810000-0900)/", -9)]
+    [InlineData("/Date(1705285810000+0000)/", 0)]
+    public void TryParseTimestamp_MicrosoftOffset_ConvertsUtcToLocalTime(string source, int offsetHours)
+    {
+        Assert.True(Utf8Helper.TryParseTimestamp(Encoding.UTF8.GetBytes(source),
+            out var value, out var offset, null, false));
+
+        var expected = DateTimeOffset.FromUnixTimeMilliseconds(1705285810000).LocalDateTime;
+        Assert.Equal(expected, value);
+        Assert.Equal(DateTimeKind.Local, value.Kind);
+        Assert.Equal(TimeSpan.FromHours(offsetHours), offset);
+    }
+
     [Fact]
     public void TryParseTimestamp_CustomFormat()
     {
