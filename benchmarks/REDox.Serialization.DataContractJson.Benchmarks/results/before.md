@@ -1,0 +1,26 @@
+```
+
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26300.9457)
+AMD Ryzen 9 9950X 4.30GHz, 1 CPU, 32 logical and 16 physical cores
+.NET SDK 11.0.100-rc.1.26425.128
+  [Host]     : .NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v4
+  Job-HDUCDG : .NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v4
+
+IterationCount=8  IterationTime=250ms  LaunchCount=1  
+WarmupCount=3  
+
+```
+| Method      | Format             | Count | Mean         | Error      | StdDev     | Gen0   | Allocated |
+|------------ |------------------- |------ |-------------:|-----------:|-----------:|-------:|----------:|
+| **Serialize**   | **Default**            | **1**     |     **56.31 ns** |   **1.072 ns** |   **0.476 ns** | **0.0046** |      **80 B** |
+| Deserialize | Default            | 1     |     84.56 ns |   1.004 ns |   0.525 ns | 0.0076 |     128 B |
+| **Serialize**   | **Default**            | **64**    |  **1,214.94 ns** |  **27.358 ns** |  **14.309 ns** | **0.1998** |    **3352 B** |
+| Deserialize | Default            | 64    |  3,823.04 ns |  81.758 ns |  42.761 ns | 0.3925 |    6680 B |
+| **Serialize**   | **InvariantTimestamp** | **1**     |    **105.74 ns** |   **1.059 ns** |   **0.470 ns** | **0.0077** |     **136 B** |
+| Deserialize | InvariantTimestamp | 1     |     48.08 ns |   0.124 ns |   0.055 ns | 0.0018 |      32 B |
+| **Serialize**   | **InvariantTimestamp** | **64**    |  **3,977.20 ns** |  **25.041 ns** |  **13.097 ns** | **0.4134** |    **7064 B** |
+| Deserialize | InvariantTimestamp | 64    |  1,154.43 ns |   4.397 ns |   2.300 ns | 0.0278 |     536 B |
+| **Serialize**   | **JapaneseLongDate**   | **1**     |    **128.15 ns** |   **4.083 ns** |   **2.135 ns** | **0.0061** |     **104 B** |
+| Deserialize | JapaneseLongDate   | 1     |    304.10 ns |   1.187 ns |   0.527 ns | 0.0012 |      32 B |
+| **Serialize**   | **JapaneseLongDate**   | **64**    |  **6,083.37 ns** |  **99.291 ns** |  **51.931 ns** | **0.2917** |    **5104 B** |
+| Deserialize | JapaneseLongDate   | 64    | 18,290.53 ns | 293.712 ns | 153.617 ns |      - |     536 B |
