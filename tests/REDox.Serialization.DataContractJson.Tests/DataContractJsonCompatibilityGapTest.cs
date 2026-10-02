@@ -281,5 +281,84 @@ public sealed class DataContractJsonCompatibilityGapTest
         Assert.Equal(expected.Value.Kind, actual.Value.Kind);
     }
 
+    [Theory]
+    [InlineData("2024-01-02T03:04:05Z", DateTimeStyles.RoundtripKind)]
+    [InlineData("2024-01-02T03:04:05", DateTimeStyles.RoundtripKind)]
+    [InlineData("2024-01-02T03:04:05Z", DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal)]
+    [InlineData("2024-01-02T03:04:05", DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal)]
+    [InlineData("2024-01-02T03:04:05+09:00", DateTimeStyles.RoundtripKind)]
+    [InlineData("2024-01-02T03:04:05-09:00", DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal)]
+    [InlineData("2024-01-02T03:04:05Z", DateTimeStyles.None)]
+    [InlineData("2024-01-02T03:04:05", DateTimeStyles.AssumeLocal)]
+    public void TimestampParsingMatchesConfiguredStyles(string text, DateTimeStyles styles)
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat("yyyy-MM-ddTHH:mm:ssK", CultureInfo.InvariantCulture)
+            {
+                DateTimeStyles = styles
+            }
+        };
+        var json = "\"" + text + "\"";
+        var expected = (DateTime)DeserializeByDataContract(typeof(DateTime), json, settings)!;
+        var actual = (DateTime)DeserializeByRedox(typeof(DateTime), json, settings)!;
+
+        Assert.Equal(expected, actual);
+        Assert.Equal(expected.Kind, actual.Kind);
+    }
+
+    [Theory]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-01-02")]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-01-02T03:04:05.123Z")]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-01-02T03:04:05Zextra")]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-02-30T03:04:05Z")]
+    [InlineData("yyyy-MM-dd", "2024-01-02T03:04:05Z")]
+    public void TimestampParsingDoesNotBypassConfiguredFormat(string format, string text)
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat(format, CultureInfo.InvariantCulture)
+        };
+        var json = "\"" + text + "\"";
+
+        Assert.Throws<System.Runtime.Serialization.SerializationException>(() => DeserializeByDataContract(typeof(DateTime), json, settings));
+        var exception = Assert.Throws<REDox.Serialization.SerializationException>(
+            () => DeserializeByRedox(typeof(DateTime), json, settings));
+        Assert.IsType<FormatException>(exception.InnerException);
+    }
+
+    [Theory]
+    [InlineData("th-TH")]
+    [InlineData("ja-JP")]
+    public void TimestampParsingHonorsConfiguredCalendar(string cultureName)
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat("yyyy-MM-ddTHH:mm:ssK", CultureInfo.GetCultureInfo(cultureName))
+        };
+        var value = new DateData().Value;
+        var json = SerializeByDataContract(typeof(DateTime), value, settings);
+        Assert.Equal(json, SerializeByRedox(typeof(DateTime), value, settings));
+
+        var expected = (DateTime)DeserializeByDataContract(typeof(DateTime), json, settings)!;
+        var actual = (DateTime)DeserializeByRedox(typeof(DateTime), json, settings)!;
+        Assert.Equal(expected, actual);
+        Assert.Equal(expected.Kind, actual.Kind);
+    }
+
+    [Fact]
+    public void LongDateTimeFormatRoundTrips()
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat("'" + new string('x', 300) + "'yyyy-MM-ddTHH:mm:ssK",
+                CultureInfo.InvariantCulture)
+        };
+        var value = new DateData().Value;
+        var json = SerializeByDataContract(typeof(DateTime), value, settings);
+        Assert.Equal(json, SerializeByRedox(typeof(DateTime), value, settings));
+        Assert.Equal(value, (DateTime)DeserializeByRedox(typeof(DateTime), json, settings)!);
+    }
+
     #endregion
 }
