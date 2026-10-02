@@ -2005,6 +2005,51 @@ public sealed class JsonElementCompatibility
     [InlineData("[]", Mode.Failed)] // 配列 
     public void DateTimeTest(string json, Mode mode)
     {
+        var previousCulture = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            AssertDateTimeCompatibility(json, mode);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previousCulture;
+        }
+    }
+
+    [Theory]
+    [InlineData("en-US", "01/02/2024 10:30:10", 1, 2)]
+    [InlineData("en-GB", "01/02/2024 10:30:10", 2, 1)]
+    [InlineData("cs-CZ", "15.01.2024 10:30:10", 1, 15)]
+    [InlineData("ja-JP", "2024年1月15日 10:30:10", 1, 15)]
+    public void RelaxedDateParsingUsesCurrentCulture(string cultureName, string text, int month, int day)
+    {
+        var previousCulture = CultureInfo.CurrentCulture;
+        try
+        {
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            CultureInfo.CurrentCulture = culture;
+
+            var json = System.Text.Json.JsonSerializer.Serialize(text);
+            using var document = Json.JsonDocument.Parse(json, SerializerSettings.Default);
+            var value = document.RootElement.AsValue();
+            var expected = new DateTime(2024, month, day, 10, 30, 10);
+            var settings = new JsonSerializerSettings { Culture = culture };
+
+            Assert.Equal(expected, (DateTime)value);
+            Assert.Equal(DateTimeKind.Unspecified, ((DateTime)value).Kind);
+            Assert.Equal(JsonConvert.DeserializeObject<DateTime>(json, settings), (DateTime)value);
+            Assert.Equal(new DateTimeOffset(expected), (DateTimeOffset)value);
+            Assert.Equal(JsonConvert.DeserializeObject<DateTimeOffset>(json, settings), (DateTimeOffset)value);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previousCulture;
+        }
+    }
+
+    private static void AssertDateTimeCompatibility(string json, Mode mode)
+    {
         var stj = System.Text.Json.JsonDocument.Parse(json).RootElement;
         var stn = JsonNode.Parse(json);
         var dox = Json.JsonDocument.Parse(json, SerializerSettings.Default).RootElement;
