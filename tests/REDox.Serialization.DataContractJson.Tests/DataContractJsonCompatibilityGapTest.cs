@@ -231,15 +231,32 @@ public sealed class DataContractJsonCompatibilityGapTest
     [Fact]
     public void DateTimeFormatProviderIsApplied()
     {
-        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        var previousCulture = CultureInfo.CurrentCulture;
+        try
         {
-            DateTimeFormat = new DateTimeFormat("D", new CultureInfo("ja-JP"))
-        };
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+            {
+                DateTimeFormat = new DateTimeFormat("D", new CultureInfo("ja-JP"))
+            };
 
-        var value = new DateData();
+            var value = new DateData();
+            var json = SerializeByDataContract(typeof(DateData), value, settings);
 
-        Assert.Equal(SerializeByDataContract(typeof(DateData), value, settings),
-            SerializeByRedox(typeof(DateData), value, settings));
+            Assert.Contains("2024年1月2日", json);
+            Assert.Equal(json, SerializeByRedox(typeof(DateData), value, settings));
+
+            var expected = (DateData?)DeserializeByDataContract(typeof(DateData), json, settings);
+            var actual = (DateData?)DeserializeByRedox(typeof(DateData), json, settings);
+
+            Assert.NotNull(actual);
+            Assert.Equal(expected!.Value, actual.Value);
+            Assert.Equal(expected.Value.Kind, actual.Value.Kind);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previousCulture;
+        }
     }
 
     [Fact]
@@ -253,7 +270,8 @@ public sealed class DataContractJsonCompatibilityGapTest
             }
         };
 
-        var json = SerializeByDataContract(typeof(DateData), new DateData(), settings);
+        var value = new DateData { Value = new DateTime(2024, 1, 2, 3, 4, 5, DateTimeKind.Unspecified) };
+        var json = SerializeByDataContract(typeof(DateData), value, settings);
 
         var expected = DeserializeByDataContract(typeof(DateData), json, settings) as DateData;
         var actual = DeserializeByRedox(typeof(DateData), json, settings) as DateData;
@@ -261,6 +279,85 @@ public sealed class DataContractJsonCompatibilityGapTest
         Assert.NotNull(actual);
         Assert.Equal(expected!.Value, actual!.Value);
         Assert.Equal(expected.Value.Kind, actual.Value.Kind);
+    }
+
+    [Theory]
+    [InlineData("2024-01-02T03:04:05Z", DateTimeStyles.RoundtripKind)]
+    [InlineData("2024-01-02T03:04:05", DateTimeStyles.RoundtripKind)]
+    [InlineData("2024-01-02T03:04:05Z", DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal)]
+    [InlineData("2024-01-02T03:04:05", DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal)]
+    [InlineData("2024-01-02T03:04:05+09:00", DateTimeStyles.RoundtripKind)]
+    [InlineData("2024-01-02T03:04:05-09:00", DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal)]
+    [InlineData("2024-01-02T03:04:05Z", DateTimeStyles.None)]
+    [InlineData("2024-01-02T03:04:05", DateTimeStyles.AssumeLocal)]
+    public void TimestampParsingMatchesConfiguredStyles(string text, DateTimeStyles styles)
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat("yyyy-MM-ddTHH:mm:ssK", CultureInfo.InvariantCulture)
+            {
+                DateTimeStyles = styles
+            }
+        };
+        var json = "\"" + text + "\"";
+        var expected = (DateTime)DeserializeByDataContract(typeof(DateTime), json, settings)!;
+        var actual = (DateTime)DeserializeByRedox(typeof(DateTime), json, settings)!;
+
+        Assert.Equal(expected, actual);
+        Assert.Equal(expected.Kind, actual.Kind);
+    }
+
+    [Theory]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-01-02")]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-01-02T03:04:05.123Z")]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-01-02T03:04:05Zextra")]
+    [InlineData("yyyy-MM-ddTHH:mm:ssK", "2024-02-30T03:04:05Z")]
+    [InlineData("yyyy-MM-dd", "2024-01-02T03:04:05Z")]
+    public void TimestampParsingDoesNotBypassConfiguredFormat(string format, string text)
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat(format, CultureInfo.InvariantCulture)
+        };
+        var json = "\"" + text + "\"";
+
+        Assert.Throws<System.Runtime.Serialization.SerializationException>(() => DeserializeByDataContract(typeof(DateTime), json, settings));
+        var exception = Assert.Throws<REDox.Serialization.SerializationException>(
+            () => DeserializeByRedox(typeof(DateTime), json, settings));
+        Assert.IsType<FormatException>(exception.InnerException);
+    }
+
+    [Theory]
+    [InlineData("th-TH")]
+    [InlineData("ja-JP")]
+    public void TimestampParsingHonorsConfiguredCalendar(string cultureName)
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat("yyyy-MM-ddTHH:mm:ssK", CultureInfo.GetCultureInfo(cultureName))
+        };
+        var value = new DateData().Value;
+        var json = SerializeByDataContract(typeof(DateTime), value, settings);
+        Assert.Equal(json, SerializeByRedox(typeof(DateTime), value, settings));
+
+        var expected = (DateTime)DeserializeByDataContract(typeof(DateTime), json, settings)!;
+        var actual = (DateTime)DeserializeByRedox(typeof(DateTime), json, settings)!;
+        Assert.Equal(expected, actual);
+        Assert.Equal(expected.Kind, actual.Kind);
+    }
+
+    [Fact]
+    public void LongDateTimeFormatRoundTrips()
+    {
+        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        {
+            DateTimeFormat = new DateTimeFormat("'" + new string('x', 300) + "'yyyy-MM-ddTHH:mm:ssK",
+                CultureInfo.InvariantCulture)
+        };
+        var value = new DateData().Value;
+        var json = SerializeByDataContract(typeof(DateTime), value, settings);
+        Assert.Equal(json, SerializeByRedox(typeof(DateTime), value, settings));
+        Assert.Equal(value, (DateTime)DeserializeByRedox(typeof(DateTime), json, settings)!);
     }
 
     #endregion
