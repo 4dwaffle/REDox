@@ -231,15 +231,32 @@ public sealed class DataContractJsonCompatibilityGapTest
     [Fact]
     public void DateTimeFormatProviderIsApplied()
     {
-        var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+        var previousCulture = CultureInfo.CurrentCulture;
+        try
         {
-            DateTimeFormat = new DateTimeFormat("D", new CultureInfo("ja-JP"))
-        };
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            var settings = new System.Runtime.Serialization.Json.DataContractJsonSerializerSettings
+            {
+                DateTimeFormat = new DateTimeFormat("D", new CultureInfo("ja-JP"))
+            };
 
-        var value = new DateData();
+            var value = new DateData();
+            var json = SerializeByDataContract(typeof(DateData), value, settings);
 
-        Assert.Equal(SerializeByDataContract(typeof(DateData), value, settings),
-            SerializeByRedox(typeof(DateData), value, settings));
+            Assert.Contains("2024年1月2日", json);
+            Assert.Equal(json, SerializeByRedox(typeof(DateData), value, settings));
+
+            var expected = (DateData?)DeserializeByDataContract(typeof(DateData), json, settings);
+            var actual = (DateData?)DeserializeByRedox(typeof(DateData), json, settings);
+
+            Assert.NotNull(actual);
+            Assert.Equal(expected!.Value, actual.Value);
+            Assert.Equal(expected.Value.Kind, actual.Value.Kind);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = previousCulture;
+        }
     }
 
     [Fact]
@@ -253,7 +270,8 @@ public sealed class DataContractJsonCompatibilityGapTest
             }
         };
 
-        var json = SerializeByDataContract(typeof(DateData), new DateData(), settings);
+        var value = new DateData { Value = new DateTime(2024, 1, 2, 3, 4, 5, DateTimeKind.Unspecified) };
+        var json = SerializeByDataContract(typeof(DateData), value, settings);
 
         var expected = DeserializeByDataContract(typeof(DateData), json, settings) as DateData;
         var actual = DeserializeByRedox(typeof(DateData), json, settings) as DateData;
