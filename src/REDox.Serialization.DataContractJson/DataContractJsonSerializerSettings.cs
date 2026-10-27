@@ -49,6 +49,7 @@ public class DataContractJsonSerializerSettings : SerializerSettings
 
     private readonly Dictionary<byte[], Type> _knownTypeDict = new(ByteArrayComparer.Instance);
     private readonly IEnumerable<Type>? _knownTypes;
+    private readonly DateTimeConverter? _dateTimeConverter;
 
     public DataContractJsonSerializerSettings(
         System.Runtime.Serialization.Json.DataContractJsonSerializerSettings? settings = default)
@@ -76,6 +77,10 @@ public class DataContractJsonSerializerSettings : SerializerSettings
         FloatFormatHandling = FloatFormatHandling.SpecialFloatAsXmlSymbol;
         DateFormatHandling = DateFormatHandling.MicrosoftDateFormat;
         DateFormatString = settings.DateTimeFormat?.FormatString;
+        if (settings.DateTimeFormat != null)
+        {
+            _dateTimeConverter = new DateTimeConverter(settings.DateTimeFormat);
+        }
         ObjectCreationHandling = ObjectCreationHandling.WhenReadOnly | ObjectCreationHandling.ReuseObject |
                                  ObjectCreationHandling.ReuseArray;
         DictionaryFormatHandling = settings.UseSimpleDictionaryFormat
@@ -298,6 +303,11 @@ public class DataContractJsonSerializerSettings : SerializerSettings
         if (type == typeof(TimeSpan))
         {
             return new TimeSpanConverter();
+        }
+
+        if (type == typeof(DateTime) && _dateTimeConverter != null)
+        {
+            return _dateTimeConverter;
         }
 
         if (type == typeof(Uri))

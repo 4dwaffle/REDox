@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+        <ProjectReference Include="../../src/REDox.Serialization.DataContractJson/REDox.Serialization.DataContractJson.csproj" />
+    </ItemGroup>
+</Project>
