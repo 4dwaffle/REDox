@@ -1204,8 +1204,8 @@ static class Utf8Helper
                         }
                         else
                         {
-                            value = new DateTime(ticks * 10000L + 621355968000000000L + offset.Value.Ticks,
-                                DateTimeKind.Local);
+                            value = new DateTime(ticks * 10000L + 621355968000000000L,
+                                DateTimeKind.Utc).ToLocalTime();
                         }
                     }
 
